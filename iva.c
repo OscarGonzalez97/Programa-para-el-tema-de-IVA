@@ -12,7 +12,7 @@
 #define EXENTA 2
 
 //FUNCIONES
-int calculo10();
+int calculo10(short int *);
 int calculo5();
 int exenta();
 void cerar();
@@ -31,6 +31,9 @@ int ultimos[5][3];
 int main(){
 	short int opcion;
 	short int borra;
+	short int ultimo_iva10=0;
+	short int ultimo_iva5=0;
+	short int ultimo_exenta=0;
 	int valor_borrado;
 	cerar();
 	do{
@@ -40,7 +43,8 @@ int main(){
 		scanf("%d", &opcion);
 		switch(opcion){
 			case 1:
-				calculo10();	
+				calculo10(&ultimo_iva10);	
+				printf("\nEstan cargados %d",ultimo_iva10);
 
 				break;
 			case 2:
@@ -154,7 +158,7 @@ void imprimetotales (){
  *Retorno:
  *-Monto de valor cargado
  */
-int calculo10(){
+int calculo10(short int * ultimo_iva10){
 	int monto_a_cargar;	
 	do{
 		printf("\nIngrese el monto del IVA 10% (de una factura) o 0 para volver:");
@@ -164,6 +168,7 @@ int calculo10(){
 	}while(monto_a_cargar<0);
 	printf("\nEl monto cargado fue %d\n", monto_a_cargar);
 	if(monto_a_cargar>0){
+		(*ultimo_iva10)++;
 		iva[IVA10]=iva[IVA10]+monto_a_cargar;
 	}
 	return monto_a_cargar;
