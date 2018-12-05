@@ -10,14 +10,15 @@
 #define IVA10 0
 #define IVA5 1
 #define EXENTA 2
-
+#define TRUE 100
+#define FALSE -1
 //FUNCIONES
 int calculo10(short int *);
-int calculo5();
-int exenta();
+int calculo5(short int * );
+int exenta(short int * );
 void cerar();
 void imprimetotales();
-int borrar();
+int borrar(short int *, short int *, short int *);
 void imprimeresultados();
 void ultimos_ingresados();
 
@@ -44,15 +45,15 @@ int main(){
 		switch(opcion){
 			case 1:
 				calculo10(&ultimo_iva10);	
-				printf("\nEstan cargados %d",ultimo_iva10);
+				//printf("\nEstan cargados %d",ultimo_iva10);
 
 				break;
 			case 2:
-				calculo5();
+				calculo5(&ultimo_iva5);
 
 				break;
 			case 3:
-				exenta();
+				exenta(&ultimo_exenta);
 
 				break;
 			case 4:
@@ -61,7 +62,7 @@ int main(){
 
 			case 5:
 				
-				valor_borrado=borrar( );	
+				valor_borrado=borrar(&ultimo_iva10, &ultimo_iva5, &ultimo_exenta );	
 				
 				printf("\nSe borro %d\n",valor_borrado);
 
@@ -90,7 +91,7 @@ int main(){
 void ultimos_ingresados(){
 	int i,j;
 	printf("\nUltimos 5 datos ingresados de cada categoría\n\tIVA 10%\tIVA 5%\tEXENTAS");
-	for(i=0;i<6;i++){
+	for(i=0;i<5;i++){
 		printf("\n");
 		for(j=0;j<EXENTA+1;j++){
 			printf("\t%d",ultimos[i][j]);
@@ -160,6 +161,7 @@ void imprimetotales (){
  */
 int calculo10(short int * ultimo_iva10){
 	int monto_a_cargar;	
+	short int i;
 	do{
 		printf("\nIngrese el monto del IVA 10% (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -168,9 +170,19 @@ int calculo10(short int * ultimo_iva10){
 	}while(monto_a_cargar<0);
 	printf("\nEl monto cargado fue %d\n", monto_a_cargar);
 	if(monto_a_cargar>0){
-		(*ultimo_iva10)++;
+		if((*ultimo_iva10)==5){
+			for(i=1;i<5;i++)
+				ultimos[i-1][IVA10]=ultimos[i][IVA10];
+			ultimos[(*ultimo_iva10)-1][IVA10]=monto_a_cargar;
+		}
+		else{
+			ultimos[(*ultimo_iva10)][IVA10]=monto_a_cargar;
+			(*ultimo_iva10)++;
+		}
+			
 		iva[IVA10]=iva[IVA10]+monto_a_cargar;
 	}
+	
 	return monto_a_cargar;
 }
 /*
@@ -180,8 +192,9 @@ int calculo10(short int * ultimo_iva10){
  *Retorno:
  *-Monto de valor cargado
  */
-int calculo5(){
+int calculo5(short int * ultimo_iva5){
 	int monto_a_cargar;	
+	short int i;
 	do{
 		printf("\nIngrese el monto del IVA 5% (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -190,7 +203,17 @@ int calculo5(){
 	}while(monto_a_cargar<0);
 	printf("\nEl monto cargado fue %d\n", monto_a_cargar);
 	if(monto_a_cargar>0){
-		iva[IVA5]=iva[IVA5]+monto_a_cargar;
+		if((*ultimo_iva5)==5){
+			for(i=1;i<5;i++)
+				ultimos[i-1][IVA5]=ultimos[i][IVA5];
+			ultimos[(*ultimo_iva5)-1][IVA5]=monto_a_cargar;
+		}
+		else{
+			ultimos[(*ultimo_iva5)][IVA5]=monto_a_cargar;
+			(*ultimo_iva5)++;
+		}
+			
+		iva[IVA10]=iva[IVA10]+monto_a_cargar;
 	}
 	return monto_a_cargar;
 }
@@ -201,8 +224,9 @@ int calculo5(){
  *Retorno:
  *-Monto de valor cargado
  */
-int exenta(){
+int exenta(short int * ultimo_exenta){
 	int monto_a_cargar;	
+	short int i;
 	do{
 		printf("\nIngrese el monto de Exentas (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -211,21 +235,32 @@ int exenta(){
 	}while(monto_a_cargar<0);
 	printf("\nEl monto cargado fue %d\n", monto_a_cargar);
 	if(monto_a_cargar>0){
-		iva[EXENTA]=iva[EXENTA]+monto_a_cargar;
+		if((*ultimo_exenta)==5){
+			for(i=1;i<5;i++)
+				ultimos[i-1][EXENTA]=ultimos[i][EXENTA];
+			ultimos[(*ultimo_exenta)-1][EXENTA]=monto_a_cargar;
+			}
+		else{
+			ultimos[(*ultimo_exenta)][EXENTA]=monto_a_cargar;
+			(*ultimo_exenta)++;
+		}
 	}
 	return monto_a_cargar;
 }
 /*
- *Esta función recibe un párametro de que lugar quiere que se borre un valor que se ingreso anteriormente o un valor específico (IVA10, IVA5, EXENTA) 
+ *Esta función recibe un parametro de que lugar quiere que se borre un valor que se ingreso anteriormente o un valor específico (IVA10, IVA5, EXENTA) 
  * y resta de lo que tiene en ese momento
  *Parámetro:
  *-
  *Retorna:
  *-Valor borrado int 
  */
-int borrar( ){
+int borrar(short int * ultimo_iva10, short int * ultimo_iva5, short int * ultimo_exenta){
 	int monto_borrado;
 	int opcion;
+	short int i=0;
+	short int j=0;
+	int ban=FALSE;
 	do{
 		printf("\n\tIngrese de donde desea borrar:\n\t1-IVA 10%\n\t2-IVA 5%\n\t3-EXENTAS\n");
 		scanf("%d", &opcion);
@@ -241,7 +276,65 @@ int borrar( ){
 	printf("\nEl monto borrado fue %d\n", monto_borrado);
 	
 	if(monto_borrado>0){
-		iva[opcion-1]=iva[opcion-1]-monto_borrado;
+		opcion=opcion-1;
+		iva[opcion]=iva[opcion]-monto_borrado;
+		switch (opcion){
+			case IVA10:
+				while(i<5){
+					if(ultimos[i][IVA10] == monto_borrado && ban==FALSE){
+						for(j=i+1;j<6;j++){
+							if(j<5)
+								ultimos[j-1][IVA10]=ultimos[j][IVA10];	
+							else if(j==5)
+								ultimos[j-1][IVA10]=0;
+							else
+								break;
+						}
+						(*ultimo_iva10)--;
+						ban=TRUE;
+					}
+					i++;
+				}
+				break;
+			case IVA5:
+				while(i<5){
+					if(ultimos[i][IVA5] == monto_borrado && ban==FALSE){
+						for(j=i+1;j<6;j++){
+							if(j<5)
+								ultimos[j-1][IVA5]=ultimos[j][IVA5];	
+							else if(j==5)
+								ultimos[j-1][IVA5]=0;
+							else
+								break;
+						}
+						(*ultimo_iva5)--;
+						ban=TRUE;
+					}
+					i++;
+				}
+				break;
+			case EXENTA:
+				while(i<5){
+					if(ultimos[i][EXENTA] == monto_borrado && ban==FALSE){
+						for(j=i+1;j<6;j++){
+							if(j<5)
+								ultimos[j-1][EXENTA]=ultimos[j][EXENTA];	
+							else if(j==5)
+								ultimos[j-1][EXENTA]=0;
+							else
+								break;
+						}
+						(*ultimo_exenta)--;
+						ban=TRUE;
+					}
+					i++;
+				}
+				break;
+			default:
+				printf("\nERROR: mala opcion");
+				//sale
+				break;
+		}
 	}
 
 	return monto_borrado;
