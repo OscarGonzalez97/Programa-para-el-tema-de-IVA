@@ -213,7 +213,7 @@ int calculo5(short int * ultimo_iva5){
 			(*ultimo_iva5)++;
 		}
 			
-		iva[IVA10]=iva[IVA10]+monto_a_cargar;
+		iva[IVA5]=iva[IVA5]+monto_a_cargar;
 	}
 	return monto_a_cargar;
 }
@@ -244,6 +244,7 @@ int exenta(short int * ultimo_exenta){
 			ultimos[(*ultimo_exenta)][EXENTA]=monto_a_cargar;
 			(*ultimo_exenta)++;
 		}
+		iva[EXENTA]=iva[EXENTA]+monto_a_cargar;
 	}
 	return monto_a_cargar;
 }
