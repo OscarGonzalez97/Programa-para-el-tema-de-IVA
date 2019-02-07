@@ -162,6 +162,10 @@ void imprimetotales (){
 int calculo10(short int * ultimo_iva10){
 	int monto_a_cargar;	
 	short int i;
+	FILE * ivaFile;
+	//Abrimos archivo en windows
+	ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/enero/FacturasIva10.txt","a");
+	
 	do{
 		printf("\nIngrese el monto del IVA 10% (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -170,6 +174,7 @@ int calculo10(short int * ultimo_iva10){
 	}while(monto_a_cargar<0);
 	printf("\nEl monto cargado fue %d\n", monto_a_cargar);
 	if(monto_a_cargar>0){
+		//Esta parte es por el tema de los 5 ultimos
 		if((*ultimo_iva10)==5){
 			for(i=1;i<5;i++)
 				ultimos[i-1][IVA10]=ultimos[i][IVA10];
@@ -179,10 +184,11 @@ int calculo10(short int * ultimo_iva10){
 			ultimos[(*ultimo_iva10)][IVA10]=monto_a_cargar;
 			(*ultimo_iva10)++;
 		}
-			
+		fprintf(ivaFile,"%d\n",monto_a_cargar);
 		iva[IVA10]=iva[IVA10]+monto_a_cargar;
 	}
 	
+	fclose(ivaFile);
 	return monto_a_cargar;
 }
 /*
@@ -195,6 +201,10 @@ int calculo10(short int * ultimo_iva10){
 int calculo5(short int * ultimo_iva5){
 	int monto_a_cargar;	
 	short int i;
+	FILE * ivaFile;
+	//Abrimos archivo en windows
+	ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/enero/FacturasIva5.txt","a");
+	
 	do{
 		printf("\nIngrese el monto del IVA 5% (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -212,9 +222,10 @@ int calculo5(short int * ultimo_iva5){
 			ultimos[(*ultimo_iva5)][IVA5]=monto_a_cargar;
 			(*ultimo_iva5)++;
 		}
-			
+		fprintf(ivaFile,"%d\n",monto_a_cargar);
 		iva[IVA5]=iva[IVA5]+monto_a_cargar;
 	}
+	fclose(ivaFile);
 	return monto_a_cargar;
 }
 /*
@@ -227,6 +238,10 @@ int calculo5(short int * ultimo_iva5){
 int exenta(short int * ultimo_exenta){
 	int monto_a_cargar;	
 	short int i;
+	FILE * ivaFile;
+	//Abrimos archivo en windows
+	ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/enero/FacturasExentas.txt","a");
+	
 	do{
 		printf("\nIngrese el monto de Exentas (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -244,8 +259,10 @@ int exenta(short int * ultimo_exenta){
 			ultimos[(*ultimo_exenta)][EXENTA]=monto_a_cargar;
 			(*ultimo_exenta)++;
 		}
+		fprintf(ivaFile,"%d\n",monto_a_cargar);
 		iva[EXENTA]=iva[EXENTA]+monto_a_cargar;
 	}
+	fclose(ivaFile);
 	return monto_a_cargar;
 }
 /*
