@@ -38,13 +38,13 @@ int main(){
 	int valor_borrado;
 	cerar();
 	do{
-		printf("\n...::BIENVENIDO AL MANEJADOR DE IVA PARA PEQUEÑOS CONTRIBUYENTES::..\n1-Carga Monto de IVA 10%\n");
-		printf("2-Carga Monto de IVA 5%\n3-Carga Monto exentas\n");
+		printf("\n...::BIENVENIDO AL MANEJADOR DE IVA PARA PEQUEÑOS CONTRIBUYENTES::..\n1-Carga Monto de IVA 10%%\n");
+		printf("2-Carga Monto de IVA 5%%\n3-Carga Monto exentas\n");
 		printf("4-Imprimir 5 últimos cargados de cada opción\n5-Eliminar valor\n6-Mostrar resultado para declaración\n0-SALIR\n::");
-		scanf("%d", &opcion);
+		scanf("%hd", &opcion);
 		switch(opcion){
 			case 1:
-				calculo10(&ultimo_iva10);	
+				calculo10(&ultimo_iva10);
 				//printf("\nEstan cargados %d",ultimo_iva10);
 
 				break;
@@ -57,23 +57,23 @@ int main(){
 
 				break;
 			case 4:
-				ultimos_ingresados();	
+				ultimos_ingresados();
 				break;
 
 			case 5:
-				
-				valor_borrado=borrar(&ultimo_iva10, &ultimo_iva5, &ultimo_exenta );	
-				
+
+				valor_borrado=borrar(&ultimo_iva10, &ultimo_iva5, &ultimo_exenta );
+
 				printf("\nSe borro %d\n",valor_borrado);
 
 				break;
 			case 6:
 				//Aca se calcula todo
-					
+
 				imprimetotales();
 				puts("\n");
 				printf("\n A continuación se imprimirán los montos que se tendrá que ingresar en la declaración del formulario 120 del sistema Marangatu");
-				imprimeresultados();	
+				imprimeresultados();
 				break;
 
 			case 0:
@@ -83,14 +83,14 @@ int main(){
 				printf("\nERROR:Opcion no válida\n");
 		}
 	}while(opcion!=0);
-	
-	return 1;
+
+	return EXIT_SUCCESS;
 }
 
 //Simplemente imprime los últimos datos ingresados en las 3 categorías (se guardaron en otras funciones)
 void ultimos_ingresados(){
 	int i,j;
-	printf("\nUltimos 5 datos ingresados de cada categoría\n\tIVA 10%\tIVA 5%\tEXENTAS");
+	printf("\nUltimos 5 datos ingresados de cada categoría\n\tIVA 10%%\tIVA 5%%\tEXENTAS");
 	for(i=0;i<5;i++){
 		printf("\n");
 		for(j=0;j<EXENTA+1;j++){
@@ -102,8 +102,8 @@ void ultimos_ingresados(){
 
 
 /*
- *En esta función se calcula el monto de las gravadas 10% y 5% de todas las facturas cargadas y se calculo el monto a ingresar en el formulario 120 del 
- *sistema Marangatu 
+ *En esta función se calcula el monto de las gravadas 10% y 5% de todas las facturas cargadas y se calculo el monto a ingresar en el formulario 120 del
+ *sistema Marangatu
  *Parametros:
  *-
  *Retorno:
@@ -111,16 +111,16 @@ void ultimos_ingresados(){
  *
  */
 void imprimeresultados(){
-	
+
 	short int i;
 
 	iva_r[IVA10]=iva[IVA10]*11-iva[IVA10];
-	
+
 	iva_r[IVA5]=iva[IVA5]*21-iva[IVA5];
 
 	iva_r[EXENTA]=iva[EXENTA];
-	
-	printf("\n\tGravadas 10% \tGravadas 5% \tEXENTAS\n");
+
+	printf("\n\tGravadas 10%% \tGravadas 5%% \tEXENTAS\n");
 	printf("\t%d", iva_r[IVA10]);
 	printf("\t\t%d", iva_r [IVA5]);
 	printf("\t\t%d", iva_r[EXENTA]);
@@ -138,7 +138,7 @@ void cerar(){
 		for(j=0;j<6;j++){
 			ultimos[j][i]=0;
 		}
-	
+
 	}
 }
 
@@ -146,7 +146,7 @@ void cerar(){
 void imprimetotales (){
 	short int i;
 
-	printf("\n\tIVA 10% \tIVA 5% \t\tEXENTAS\n");
+	printf("\n\tIVA 10%% \tIVA 5%% \t\tEXENTAS\n");
 	printf("\t%d", iva[IVA10]);
 	printf("\t\t%d", iva [IVA5]);
 	printf("\t\t%d", iva[EXENTA]);
@@ -160,14 +160,15 @@ void imprimetotales (){
  *-Monto de valor cargado
  */
 int calculo10(short int * ultimo_iva10){
-	int monto_a_cargar;	
+	int monto_a_cargar;
 	short int i;
 	FILE * ivaFile;
 	//Abrimos archivo en windows
-	ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/febrero/FacturasIva10.txt","a");
-	
+	//ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/febrero/FacturasIva10.txt","a");
+	//Abrimos archivo en Linux
+	ivaFile=fopen("/home/oscarg/Downloads/xfacturas electronicas/marzo/FacturasIva10.txt","a");
 	do{
-		printf("\nIngrese el monto del IVA 10% (de una factura) o 0 para volver:");
+		printf("\nIngrese el monto del IVA 10%% (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
 		if(monto_a_cargar==0)
 			break;
@@ -186,9 +187,8 @@ int calculo10(short int * ultimo_iva10){
 		}
 		iva[IVA10]=iva[IVA10]+monto_a_cargar;
 		fprintf(ivaFile,"%d\t%d\n",monto_a_cargar,iva[IVA10]);
-		//iva[IVA10]=iva[IVA10]+monto_a_cargar;
-	}
-	
+		}
+
 	fclose(ivaFile);
 	return monto_a_cargar;
 }
@@ -200,14 +200,15 @@ int calculo10(short int * ultimo_iva10){
  *-Monto de valor cargado
  */
 int calculo5(short int * ultimo_iva5){
-	int monto_a_cargar;	
+	int monto_a_cargar;
 	short int i;
 	FILE * ivaFile;
 	//Abrimos archivo en windows
-	ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/febrero/FacturasIva5.txt","a");
-	
+	//ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/febrero/FacturasIva5.txt","a");
+	//Abrimos archivo en Linux
+	ivaFile=fopen("/home/oscarg/Downloads/xfacturas electronicas/marzo/FacturasIva5.txt","a");
 	do{
-		printf("\nIngrese el monto del IVA 5% (de una factura) o 0 para volver:");
+		printf("\nIngrese el monto del IVA 5%% (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
 		if(monto_a_cargar==0)
 			break;
@@ -225,7 +226,6 @@ int calculo5(short int * ultimo_iva5){
 		}
 		iva[IVA5]=iva[IVA5]+monto_a_cargar;
 		fprintf(ivaFile,"%d\t%d\n",monto_a_cargar,iva[IVA5]);
-		//iva[IVA5]=iva[IVA5]+monto_a_cargar;
 	}
 	fclose(ivaFile);
 	return monto_a_cargar;
@@ -238,12 +238,13 @@ int calculo5(short int * ultimo_iva5){
  *-Monto de valor cargado
  */
 int exenta(short int * ultimo_exenta){
-	int monto_a_cargar;	
+	int monto_a_cargar;
 	short int i;
 	FILE * ivaFile;
 	//Abrimos archivo en windows
-	ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/febrero/FacturasExentas.txt","a");
-	
+	//ivaFile=fopen("C:/Users/oscar/Downloads/xfacturas electronicas/febrero/FacturasExentas.txt","a");
+	//Abrimos archivo en Linux
+	ivaFile=fopen("/home/oscarg/Downloads/xfacturas electronicas/marzo/FacturasExentas.txt","a");
 	do{
 		printf("\nIngrese el monto de Exentas (de una factura) o 0 para volver:");
 		scanf("%d", &monto_a_cargar);
@@ -263,18 +264,17 @@ int exenta(short int * ultimo_exenta){
 		}
 		iva[EXENTA]=iva[EXENTA]+monto_a_cargar;
 		fprintf(ivaFile,"%d\t%d\n",monto_a_cargar,iva[EXENTA]);
-		//iva[EXENTA]=iva[EXENTA]+monto_a_cargar;
 	}
 	fclose(ivaFile);
 	return monto_a_cargar;
 }
 /*
- *Esta función recibe un parametro de que lugar quiere que se borre un valor que se ingreso anteriormente o un valor específico (IVA10, IVA5, EXENTA) 
+ *Esta función recibe un parametro de que lugar quiere que se borre un valor que se ingreso anteriormente o un valor específico (IVA10, IVA5, EXENTA)
  * y resta de lo que tiene en ese momento
  *Parámetro:
  *-
  *Retorna:
- *-Valor borrado int 
+ *-Valor borrado int
  */
 int borrar(short int * ultimo_iva10, short int * ultimo_iva5, short int * ultimo_exenta){
 	int monto_borrado;
@@ -283,19 +283,19 @@ int borrar(short int * ultimo_iva10, short int * ultimo_iva5, short int * ultimo
 	short int j=0;
 	int ban=FALSE;
 	do{
-		printf("\n\tIngrese de donde desea borrar:\n\t1-IVA 10%\n\t2-IVA 5%\n\t3-EXENTAS\n");
+		printf("\n\tIngrese de donde desea borrar:\n\t1-IVA 10%%\n\t2-IVA 5%%\n\t3-EXENTAS\n");
 		scanf("%d", &opcion);
 	}while(opcion!=1 && opcion!=2 && opcion != 3);
-					
+
 	do{
 		printf("\nIngrese el monto a borrar o restar de la opcion que escogio o 0 para volver:");
 		scanf("%d", &monto_borrado);
 		if(monto_borrado==0)
 			break;
 	}while(monto_borrado<0);
-	
+
 	printf("\nEl monto borrado fue %d\n", monto_borrado);
-	
+
 	if(monto_borrado>0){
 		opcion=opcion-1;
 		iva[opcion]=iva[opcion]-monto_borrado;
@@ -305,7 +305,7 @@ int borrar(short int * ultimo_iva10, short int * ultimo_iva5, short int * ultimo
 					if(ultimos[i][IVA10] == monto_borrado && ban==FALSE){
 						for(j=i+1;j<6;j++){
 							if(j<5)
-								ultimos[j-1][IVA10]=ultimos[j][IVA10];	
+								ultimos[j-1][IVA10]=ultimos[j][IVA10];
 							else if(j==5)
 								ultimos[j-1][IVA10]=0;
 							else
@@ -322,7 +322,7 @@ int borrar(short int * ultimo_iva10, short int * ultimo_iva5, short int * ultimo
 					if(ultimos[i][IVA5] == monto_borrado && ban==FALSE){
 						for(j=i+1;j<6;j++){
 							if(j<5)
-								ultimos[j-1][IVA5]=ultimos[j][IVA5];	
+								ultimos[j-1][IVA5]=ultimos[j][IVA5];
 							else if(j==5)
 								ultimos[j-1][IVA5]=0;
 							else
@@ -339,7 +339,7 @@ int borrar(short int * ultimo_iva10, short int * ultimo_iva5, short int * ultimo
 					if(ultimos[i][EXENTA] == monto_borrado && ban==FALSE){
 						for(j=i+1;j<6;j++){
 							if(j<5)
-								ultimos[j-1][EXENTA]=ultimos[j][EXENTA];	
+								ultimos[j-1][EXENTA]=ultimos[j][EXENTA];
 							else if(j==5)
 								ultimos[j-1][EXENTA]=0;
 							else
