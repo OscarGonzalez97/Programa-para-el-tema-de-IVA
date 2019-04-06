@@ -7,3 +7,4 @@ Metas a cumplir:
 * Programa con todo lo necesario al 100%
 * Persistencia de datos en Postgresql utilizando psycopg2
 * Interfaz GUI
+* Control web del estado ?
