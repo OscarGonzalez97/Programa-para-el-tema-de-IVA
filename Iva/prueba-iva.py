@@ -20,12 +20,18 @@ try:
     #Select para mostrar resultado
     mes='abril'
     anho=2019
-    postgres_select_query="SELECT * FROM iva10 WHERE mes='"+mes+"' AND anho="+str(anho)
+    postgres_select_query="SELECT iva10_id FROM iva10 WHERE monto=123 LIMIT 1"
     cursor.execute(postgres_select_query)
-    print("Selecting rows from iva10 table using cursor.fetchall")
     iva10_record = cursor.fetchall()
+    sql_delete_query = "Delete from iva10 where iva10_id=%s"
+    record_to_delete = (iva10_record)
+    cursor.execute(sql_delete_query, record_to_delete)
+    connection.commit()
+    count = cursor.rowcount
+    print(count, "Record deleted successfully ")
 
-    print("Print each row and it's columns values")
+
+    '''print("Print each row and it's columns values")
     totalImpuesto=0
     for row in iva10_record:
         print("monto = ", row[0])
@@ -41,7 +47,7 @@ try:
     cursor.execute(sql_delete_query, record_to_delete)
     connection.commit()
     count = cursor.rowcount
-    print(count, "Record deleted successfully ")
+    print(count, "Record deleted successfully ")'''
 
 except (Exception, psycopg2.Error) as error :
         print ("Error while connecting to PostgreSQL", error)

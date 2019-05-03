@@ -23,7 +23,7 @@ def elimina_valor(mes, anho):
             iva5.elimina(mes, anho)
             ban=False
 
-        elif opcion ==3:
+        elif opcion == 3:
             exenta.elimina(mes, anho)
             ban=False
 
