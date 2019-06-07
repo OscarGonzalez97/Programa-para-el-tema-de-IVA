@@ -1,3 +1,5 @@
+from funciones_utiles import *
+
 class Impuesto():
 
     def __init__(self):
@@ -7,3 +9,7 @@ class Impuesto():
         self.totalImpuesto=0
         #Esto va ser lo que al final se va cargar en el sistema Marangatu
         self.cargarMarangatu=0
+
+    def muestra_mes(self, mes, anho):
+        '''Se mostrara los resultados de todo el mes'''
+        select_mes(self.impuesto, mes, anho)
